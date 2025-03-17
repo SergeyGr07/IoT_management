@@ -44,7 +44,7 @@ jobs:
       - name: Deploy with Docker Compose
         run: |
           ssh -o StrictHostKeyChecking=no -p 2233 deployer@91.107.121.133 "
-            cd /home/deployer/water_sensor &&
+            cd /home/deployer/IoT_management &&
             git pull origin main &&
             sudo docker compose down &&
             sudo docker compose up -d --build
