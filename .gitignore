@@ -54,7 +54,13 @@ yarn-error.log
 *.egg-info/
 dist/
 build/
+__pycache__/
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
 
 # Environment configuration files #
 ####################################
-.env 
+.env
