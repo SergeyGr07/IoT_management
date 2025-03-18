@@ -27,6 +27,7 @@
 ├── requirements.txt               # Зависимости Python
 ├── Dockerfile                     # Конфигурация Docker
 ├── docker-compose.yml             # Конфигурация Docker Compose
+├── docker-compose-dev.yml         # Конфигурация Docker Compose для разработки
 ├── nginx.conf                     # Конфигурация Nginx
 ├── prometheus.yml                 # Конфигурация Prometheus
 ├── grafana/                       # Конфигурация Grafana
@@ -123,6 +124,26 @@ docker compose up -d
 - API: `http://localhost:5055`
 - Prometheus: `http://localhost:8084`
 - Grafana: `http://localhost:8085` (логин: admin, пароль: admin)
+
+### Разработка и тестирование
+
+Для локальной разработки и тестирования без конфликтов с основным развертыванием используйте:
+
+```bash
+docker compose -f docker-compose-dev.yml up -d
+```
+
+Сервисы для разработки будут доступны по следующим адресам:
+- API: `http://localhost:5056`
+- Web-интерфейс: `http://localhost:8080`
+- Prometheus: `http://localhost:8086`
+- Grafana: `http://localhost:8087` (логин: admin, пароль: admin)
+
+Для запуска тестов:
+
+```bash
+pytest test_app.py
+```
 
 ## Особенности
 
