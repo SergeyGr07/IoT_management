@@ -124,7 +124,7 @@ docker compose up -d
 - API: `http://localhost:5055`
 - Web-интерфейс: `http://localhost:5066`
 - Prometheus: `http://localhost:8084`
-- Grafana: `http://localhost:8085` (логин: admin, пароль: admin)
+- Grafana: `http://localhost:8085` (логин: admin, пароль: admin123)
 
 ### Разработка и тестирование
 
@@ -138,7 +138,7 @@ docker compose -f docker-compose-dev.yml up -d
 - API: `http://localhost:5056`
 - Web-интерфейс: `http://localhost:8080`
 - Prometheus: `http://localhost:8086`
-- Grafana: `http://localhost:8087` (логин: admin, пароль: admin)
+- Grafana: `http://localhost:8087` (логин: admin, пароль: admin123)
 
 Для запуска тестов:
 
