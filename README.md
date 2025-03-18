@@ -122,6 +122,7 @@ docker compose up -d
 
 Сервисы будут доступны по следующим адресам:
 - API: `http://localhost:5055`
+- Web-интерфейс: `http://localhost:5066`
 - Prometheus: `http://localhost:8084`
 - Grafana: `http://localhost:8085` (логин: admin, пароль: admin)
 
