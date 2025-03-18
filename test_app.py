@@ -10,6 +10,14 @@ def test_health_check():
         assert response.json == {"status": "healthy"}
 
 
+def test_metrics_endpoint():
+    """Тестирование эндпоинта Prometheus метрик"""
+    with app.test_client() as client:
+        response = client.get('/metrics')
+        assert response.status_code == 200
+        assert 'text/plain' in response.content_type
+
+
 def test_water_level_endpoint():
     """Тестирование эндпоинта /water-level с корректными данными"""
     with app.test_client() as client:
@@ -97,4 +105,50 @@ def test_float_water_level():
             content_type='application/json'
         )
         assert response.status_code == 200
+        assert response.json == {"status": "ok"}
+
+
+def test_esp_metrics_endpoint():
+    """Тестирование эндпоинта /esp-metrics с корректными данными"""
+    with app.test_client() as client:
+        response = client.post(
+            '/esp-metrics',
+            data=json.dumps({
+                'uptime': 3600,
+                'free_heap': 180000,
+                'wifi_rssi': -55
+            }),
+            content_type='application/json'
+        )
+        assert response.status_code == 200
+        assert response.json == {"status": "ok"}
+
+
+def test_esp_metrics_partial_data():
+    """Тестирование эндпоинта /esp-metrics с частичными данными"""
+    with app.test_client() as client:
+        response = client.post(
+            '/esp-metrics',
+            data=json.dumps({
+                'uptime': 3600
+            }),
+            content_type='application/json'
+        )
+        assert response.status_code == 200
+        assert response.json == {"status": "ok"}
+
+
+def test_esp_metrics_invalid_data():
+    """Тестирование эндпоинта /esp-metrics с некорректными данными"""
+    with app.test_client() as client:
+        response = client.post(
+            '/esp-metrics',
+            data=json.dumps({
+                'uptime': "не число",
+                'free_heap': "не число",
+                'wifi_rssi': "не число"
+            }),
+            content_type='application/json'
+        )
+        assert response.status_code == 200  # Должен вернуть 200, так как мы обрабатываем ошибки внутри
         assert response.json == {"status": "ok"}
