@@ -27,28 +27,32 @@ def water_level():
     Returns:
         JSON с статусом выполнения запроса
     """
+    # Проверка на наличие JSON данных
     if not request.is_json:
         return jsonify({"error": "Отсутствуют данные JSON"}), 400
-
+        
+    # Проверка на пустые данные
     try:
-        data = request.get_json()
-        if not data:
+        data = request.get_json(silent=True)
+        if data is None or data == {}:
             return jsonify({"error": "Отсутствуют данные JSON"}), 400
-
-        water_level = data.get("water_level")
-        if water_level is None:
+            
+        # Проверка наличия параметра water_level
+        if "water_level" not in data:
             return jsonify({"error": "Отсутствует параметр 'water_level'"}), 400
             
+        # Проверка типа параметра water_level
         try:
-            water_level = float(water_level)
+            water_level = float(data["water_level"])
         except (ValueError, TypeError):
             return jsonify({"error": "Параметр 'water_level' должен быть числом"}), 400
 
-        if water_level > 350:  # Проверяем превышение критического уровня
+        # Проверка превышения критического уровня
+        if water_level > 350:
             print(f" Пора выключать! Уровень воды: {water_level}")
 
         return jsonify({"status": "ok"}), 200
-
+        
     except Exception as e:
         print(f"Ошибка при обработке запроса: {str(e)}")
         return jsonify({"error": "Внутренняя ошибка сервера"}), 500

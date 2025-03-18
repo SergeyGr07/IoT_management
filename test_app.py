@@ -45,6 +45,15 @@ def test_missing_json_data():
         assert response.status_code == 400
         assert "Отсутствуют данные JSON" in response.json["error"]
 
+        # Тест с пустым JSON объектом
+        response = client.post(
+            '/water-level',
+            data=json.dumps({}),
+            content_type='application/json'
+        )
+        assert response.status_code == 400
+        assert "Отсутствуют данные JSON" in response.json["error"]
+
         # Тест с неверным content-type
         response = client.post(
             '/water-level',
@@ -60,7 +69,7 @@ def test_missing_water_level():
     with app.test_client() as client:
         response = client.post(
             '/water-level',
-            data=json.dumps({}),
+            data=json.dumps({"some_other_field": "value"}),
             content_type='application/json'
         )
         assert response.status_code == 400
