@@ -15,7 +15,7 @@ services:
     container_name: water-sensor-nginx
     restart: always
     ports:
-      - "80:80"
+      - "5066:80"
       - "8084:8084"
       - "8085:8085"
     volumes:
