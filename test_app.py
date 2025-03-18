@@ -2,6 +2,14 @@ import json
 from app import app
 
 
+def test_health_check():
+    """Тестирование эндпоинта проверки работоспособности сервиса"""
+    with app.test_client() as client:
+        response = client.get('/health')
+        assert response.status_code == 200
+        assert response.json == {"status": "healthy"}
+
+
 def test_water_level_endpoint():
     """Тестирование эндпоинта /water-level с корректными данными"""
     with app.test_client() as client:
@@ -28,10 +36,20 @@ def test_water_level_validation():
 def test_missing_json_data():
     """Тестирование обработки запроса без JSON данных"""
     with app.test_client() as client:
+        # Тест с пустым телом запроса
         response = client.post(
             '/water-level',
             data='',
             content_type='application/json'
+        )
+        assert response.status_code == 400
+        assert "Отсутствуют данные JSON" in response.json["error"]
+
+        # Тест с неверным content-type
+        response = client.post(
+            '/water-level',
+            data='not-json',
+            content_type='text/plain'
         )
         assert response.status_code == 400
         assert "Отсутствуют данные JSON" in response.json["error"]

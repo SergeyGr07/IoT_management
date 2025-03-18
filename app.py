@@ -18,24 +18,27 @@ def health_check():
 def water_level():
     """
     Обработка POST-запроса с данными об уровне воды.
-
+    
     Ожидаемый формат JSON:
     {
         "water_level": 450
     }
-
+    
     Returns:
         JSON с статусом выполнения запроса
     """
+    if not request.is_json:
+        return jsonify({"error": "Отсутствуют данные JSON"}), 400
+
     try:
-        data = request.json
+        data = request.get_json()
         if not data:
             return jsonify({"error": "Отсутствуют данные JSON"}), 400
 
         water_level = data.get("water_level")
         if water_level is None:
             return jsonify({"error": "Отсутствует параметр 'water_level'"}), 400
-
+            
         try:
             water_level = float(water_level)
         except (ValueError, TypeError):
